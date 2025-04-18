@@ -1,0 +1,1033 @@
+<!-- templates/orders.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Inventory Management System</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<style>/* static/css/style.css */
+    :root {
+        --primary-color: #4a6fa5;
+        --primary-dark: #3a5a8c;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --warning-color: #ffc107;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+        --gray-100: #f8f9fa;
+        --gray-200: #e9ecef;
+        --gray-300: #dee2e6;
+        --gray-400: #ced4da;
+        --gray-500: #adb5bd;
+        --gray-600: #6c757d;
+        --gray-700: #495057;
+        --gray-800: #343a40;
+        --gray-900: #212529;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--gray-800);
+        background-color: var(--gray-100);
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+    
+    /* Header and Navigation */
+    header {
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 15px 0;
+        margin-bottom: 30px;
+    }
+    
+    header h1 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+    }
+    
+    nav a {
+        text-decoration: none;
+        color: var(--gray-700);
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    nav a:hover, nav a.active {
+        color: var(--primary-color);
+        background-color: var(--gray-200);
+    }
+    
+    /* Main Content */
+    main {
+        padding: 20px 0 40px;
+    }
+    
+    section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    /* Dashboard Cards */
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .card h3 {
+        color: var(--gray-700);
+        margin-bottom: 10px;
+    }
+    
+    .card .count {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+    
+    /* Dashboard Sections */
+    .dashboard-sections {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+    }
+    
+    .section h3 {
+        margin-bottom: 15px;
+        color: var(--gray-700);
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--gray-300);
+    }
+    
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    table th, table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid var(--gray-300);
+    }
+    
+    /* Continuing from where we left off */
+    table th {
+        background-color: var(--gray-200);
+        font-weight: 600;
+        color: var(--gray-700);
+    }
+    
+    table tbody tr:hover {
+        background-color: var(--gray-100);
+    }
+    
+    .text-right {
+        text-align: right;
+    }
+    
+    /* Buttons */
+    .btn-primary, .btn-secondary, .btn-danger, .btn-success, .btn-warning {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+    }
+    
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+    
+    .btn-danger {
+        background-color: var(--danger-color);
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    
+    .btn-success {
+        background-color: var(--success-color);
+        color: white;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+    }
+    
+    /* Forms */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: var(--gray-700);
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--gray-400);
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.25);
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .help-text {
+        font-size: 0.875rem;
+        color: var(--gray-600);
+        margin-top: 5px;
+    }
+    
+    /* Modals */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: auto;
+    }
+    
+    .modal-content {
+        background-color: white;
+        margin: 50px auto;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 500px;
+        max-width: 90%;
+    }
+    
+    .wide-modal {
+        width: 700px;
+    }
+    
+    .close {
+        color: var(--gray-600);
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close:hover {
+        color: var(--gray-800);
+    }
+    
+    /* Inventory Styles */
+    .inventory-filters {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+    
+    .filter-group, .search-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .search-group input {
+        padding: 8px 12px;
+        border: 1px solid var(--gray-400);
+        border-radius: 4px;
+        width: 250px;
+    }
+    
+    /* Stock Status */
+    .stock-status {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .status-normal {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-low {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    .status-out {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    /* Order Items */
+    .order-items {
+        margin: 20px 0;
+        border: 1px solid var(--gray-300);
+        padding: 15px;
+        border-radius: 4px;
+    }
+    
+    .order-item {
+        display: grid;
+        grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;
+        gap: 10px;
+        align-items: end;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--gray-300);
+    }
+    
+    .order-summary {
+        text-align: right;
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    /* Status Badges */
+    .status-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    .status-processing {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+    
+    .status-shipped {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+    
+    .status-delivered {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    /* Order Details */
+    #order-info {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: var(--gray-100);
+        border-radius: 4px;
+    }
+    
+    .order-actions {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid var(--gray-300);
+    }
+    
+    .status-update {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    /* Footer */
+    footer {
+        padding: 20px 0;
+        text-align: center;
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        margin-top: 30px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .dashboard-cards {
+            grid-template-columns: 1fr;
+        }
+        
+        .dashboard-sections {
+            grid-template-columns: 1fr;
+        }
+        
+        .order-item {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .inventory-filters {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        table {
+            display: block;
+            overflow-x: auto;
+        }
+    }</style>
+<body>
+    <div class="container">
+        <header>
+            <h1> Iniyan Inventory Management System</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('products') }}">Products</a></li>
+                    <li><a href="{{ url_for('inventory') }}">Inventory</a></li>
+                    <li><a href="{{ url_for('orders') }}" class="active">Orders</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="orders">
+                <div class="section-header">
+                    <h2>Orders</h2>
+                    <button id="new-order-btn" class="btn-primary">Create New Order</button>
+                </div>
+                
+                <div class="order-list">
+                    <table id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Orders will be loaded here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        
+        <!-- New Order Modal -->
+        <div id="order-modal" class="modal">
+            <div class="modal-content wide-modal">
+                <span class="close">&times;</span>
+                <h2>Create New Order</h2>
+                
+                <form id="order-form">
+                    <div class="form-group">
+                        <label for="customer-name">Customer Name</label>
+                        <input type="text" id="customer-name" required>
+                    </div>
+                    
+                    <div class="order-items">
+                        <h3>Order Items</h3>
+                        <div id="order-items-list">
+                            <div class="order-item">
+                                <div class="form-group">
+                                    <label>Product</label>
+                                    <select class="product-select" required>
+                                        <option value="">Select a product</option>
+                                        <!-- Products will be loaded dynamically -->
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" class="item-quantity" min="1" value="1" required>
+                                </div>
+                                
+                                <div class="item-price">
+                                    <p>Price: $<span class="price-value">0.00</span></p>
+                                </div>
+                                
+                                <div class="item-total">
+                                    <p>Subtotal: $<span class="subtotal-value">0.00</span></p>
+                                </div>
+                                
+                                <button type="button" class="remove-item btn-danger" disabled>Remove</button>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-item-btn" class="btn-secondary">Add Another Item</button>
+                        
+                        <div class="order-summary">
+                            <p>Total: $<span id="order-total">0.00</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancel-order">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Order Details Modal -->
+        <div id="order-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Order Details</h2>
+                
+                <div id="order-info">
+                    <p><strong>Order ID:</strong> <span id="detail-order-id"></span></p>
+                    <p><strong>Customer:</strong> <span id="detail-customer"></span></p>
+                    <p><strong>Date:</strong> <span id="detail-date"></span></p>
+                    <p><strong>Status:</strong> <span id="detail-status"></span></p>
+                </div>
+                
+                <h3>Items</h3>
+                <table id="order-items-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Order items will be loaded here dynamically -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                            <td id="detail-total">$0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+                <div class="order-actions">
+                    <div class="status-update">
+                        <label for="order-status">Update Status:</label>
+                        <select id="order-status">
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <button id="update-status-btn" class="btn-primary">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Inventory Management System</p>
+        </footer>
+    </div>
+    
+    <script >
+
+        // static/js/orders.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Load orders
+    loadOrders();
+    
+    // Load products for order creation
+    loadProductsForOrderForm();
+    
+    // New order button
+    document.getElementById('new-order-btn').addEventListener('click', function() {
+        showOrderModal();
+    });
+    
+    // Modal close buttons
+    document.querySelectorAll('.close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            hideModal(this.closest('.modal').id);
+        });
+    });
+    
+    // Cancel buttons
+    document.getElementById('cancel-order').addEventListener('click', function() {
+        hideModal('order-modal');
+    });
+    
+    // Add item button
+    document.getElementById('add-item-btn').addEventListener('click', function() {
+        addOrderItemRow();
+    });
+    
+    // Submit order form
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        createOrder();
+    });
+    
+    // Update status button
+    document.getElementById('update-status-btn').addEventListener('click', function() {
+        updateOrderStatus();
+    });
+});
+
+async function loadOrders() {
+    try {
+        const response = await fetch('/api/orders');
+        const orders = await response.json();
+        
+        renderOrdersTable(orders);
+    } catch (error) {
+        console.error('Error loading orders:', error);
+    }
+}
+
+function renderOrdersTable(orders) {
+    const tbody = document.querySelector('#orders-table tbody');
+    tbody.innerHTML = '';
+    
+    if (orders.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="6" class="text-center">No orders found. Create your first order!</td>';
+        tbody.appendChild(tr);
+        return;
+    }
+    
+    // Sort by date (newest first)
+    orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    
+    orders.forEach(order => {
+        const shortId = order.id.substring(0, 8); // Show only first 8 characters of UUID
+        const createdDate = new Date(order.created_at).toLocaleDateString();
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${shortId}...</td>
+            <td>${order.customer_name}</td>
+            <td>${createdDate}</td>
+            <td>$${order.total_amount.toFixed(2)}</td>
+            <td><span class="status-badge status-${order.status}">${capitalizeFirstLetter(order.status)}</span></td>
+            <td>
+                <button class="btn-primary view-order" data-id="${order.id}">View Details</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+        
+        // Add event listener
+        tr.querySelector('.view-order').addEventListener('click', function() {
+            viewOrderDetails(order.id);
+        });
+    });
+}
+
+async function loadProductsForOrderForm() {
+    try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        
+        // Filter out products with zero quantity
+        const availableProducts = products.filter(product => product.quantity > 0);
+        
+        // Store products in a global variable for later use
+        window.availableProducts = availableProducts;
+        
+        // Update any existing product dropdowns
+        updateProductDropdowns();
+    } catch (error) {
+        console.error('Error loading products for order form:', error);
+    }
+}
+
+function updateProductDropdowns() {
+    if (!window.availableProducts) return;
+    
+    document.querySelectorAll('.product-select').forEach(select => {
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">Select a product</option>';
+        
+        window.availableProducts.forEach(product => {
+            const option = document.createElement('option');
+            option.value = product.id;
+            option.textContent = `${product.name} (Stock: ${product.quantity})`;
+            option.dataset.price = product.price;
+            option.dataset.maxQty = product.quantity;
+            select.appendChild(option);
+        });
+        
+        // Restore selected value if possible
+        if (currentValue) {
+            select.value = currentValue;
+        }
+    });
+}
+
+function showOrderModal() {
+    const modal = document.getElementById('order-modal');
+    
+    // Reset form
+    document.getElementById('order-form').reset();
+    document.getElementById('order-items-list').innerHTML = '';
+    document.getElementById('order-total').textContent = '0.00';
+    
+    // Add initial item row
+    addOrderItemRow();
+    
+    // Show modal
+    modal.style.display = 'block';
+}
+
+function hideModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function addOrderItemRow() {
+    const orderItemsList = document.getElementById('order-items-list');
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'order-item';
+    
+    itemDiv.innerHTML = `
+        <div class="form-group">
+            <label>Product</label>
+            <select class="product-select" required>
+                <option value="">Select a product</option>
+                <!-- Products will be loaded dynamically -->
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" class="item-quantity" min="1" value="1" required>
+        </div>
+        
+        <div class="item-price">
+            <p>Price: $<span class="price-value">0.00</span></p>
+        </div>
+        
+        <div class="item-total">
+            <p>Subtotal: $<span class="subtotal-value">0.00</span></p>
+        </div>
+        
+        <button type="button" class="remove-item btn-danger">Remove</button>
+    `;
+    
+    orderItemsList.appendChild(itemDiv);
+    
+    // Enable all remove buttons if there's more than one item
+    if (orderItemsList.children.length > 1) {
+        orderItemsList.querySelectorAll('.remove-item').forEach(btn => {
+            btn.disabled = false;
+        });
+    }
+    
+    // Add event listeners
+    const productSelect = itemDiv.querySelector('.product-select');
+    const quantityInput = itemDiv.querySelector('.item-quantity');
+    const removeButton = itemDiv.querySelector('.remove-item');
+    
+    // Update product dropdowns with available products
+    updateProductDropdowns();
+    
+    // Product selection change
+    productSelect.addEventListener('change', function() {
+        updateItemPriceAndSubtotal(itemDiv);
+        updateOrderTotal();
+    });
+    
+    // Quantity change
+    quantityInput.addEventListener('input', function() {
+        updateItemPriceAndSubtotal(itemDiv);
+        updateOrderTotal();
+    });
+    
+    // Remove button
+    removeButton.addEventListener('click', function() {
+        if (orderItemsList.children.length > 1) {
+            itemDiv.remove();
+            updateOrderTotal();
+            
+            // Disable the last remove button if only one item remains
+            if (orderItemsList.children.length === 1) {
+                orderItemsList.querySelector('.remove-item').disabled = true;
+            }
+        }
+    });
+}
+
+// Continuing from where we left off
+function updateItemPriceAndSubtotal(itemDiv) {
+    const productSelect = itemDiv.querySelector('.product-select');
+    const quantityInput = itemDiv.querySelector('.item-quantity');
+    const priceSpan = itemDiv.querySelector('.price-value');
+    const subtotalSpan = itemDiv.querySelector('.subtotal-value');
+    
+    if (productSelect.value) {
+        const selectedOption = productSelect.options[productSelect.selectedIndex];
+        const price = parseFloat(selectedOption.dataset.price);
+        const maxQty = parseInt(selectedOption.dataset.maxQty);
+        
+        // Update price display
+        priceSpan.textContent = price.toFixed(2);
+        
+        // Limit quantity to available stock
+        if (parseInt(quantityInput.value) > maxQty) {
+            quantityInput.value = maxQty;
+        }
+        
+        // Calculate and update subtotal
+        const quantity = parseInt(quantityInput.value);
+        const subtotal = price * quantity;
+        subtotalSpan.textContent = subtotal.toFixed(2);
+    } else {
+        // Reset if no product selected
+        priceSpan.textContent = '0.00';
+        subtotalSpan.textContent = '0.00';
+    }
+}
+
+function updateOrderTotal() {
+    let total = 0;
+    document.querySelectorAll('.subtotal-value').forEach(span => {
+        total += parseFloat(span.textContent);
+    });
+    
+    document.getElementById('order-total').textContent = total.toFixed(2);
+}
+
+async function createOrder() {
+    // Get customer name
+    const customerName = document.getElementById('customer-name').value;
+    
+    // Gather items from form
+    const orderItems = [];
+    let isValid = true;
+    
+    document.querySelectorAll('.order-item').forEach(itemDiv => {
+        const productSelect = itemDiv.querySelector('.product-select');
+        const quantityInput = itemDiv.querySelector('.item-quantity');
+        
+        if (productSelect.value) {
+            const quantity = parseInt(quantityInput.value);
+            
+            if (quantity < 1) {
+                alert('Quantity must be at least 1');
+                isValid = false;
+                return;
+            }
+            
+            orderItems.push({
+                product_id: productSelect.value,
+                quantity: quantity
+            });
+        } else {
+            alert('Please select a product for all items');
+            isValid = false;
+            return;
+        }
+    });
+    
+    if (!isValid || orderItems.length === 0) {
+        return;
+    }
+    
+    // Create order data
+    const orderData = {
+        customer_name: customerName,
+        items: orderItems
+    };
+    
+    try {
+        const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Close modal and reload orders
+            hideModal('order-modal');
+            
+            // Reload data
+            loadOrders();
+            loadProductsForOrderForm(); // Update product stock data
+        } else {
+            alert('Error: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error creating order:', error);
+        alert('An error occurred while creating the order.');
+    }
+}
+
+async function viewOrderDetails(orderId) {
+    try {
+        // Get orders data
+        const ordersResponse = await fetch('/api/orders');
+        const orders = await ordersResponse.json();
+        
+        const order = orders.find(o => o.id === orderId);
+        
+        if (order) {
+            // Populate order details
+            document.getElementById('detail-order-id').textContent = order.id;
+            document.getElementById('detail-customer').textContent = order.customer_name;
+            document.getElementById('detail-date').textContent = new Date(order.created_at).toLocaleString();
+            document.getElementById('detail-status').textContent = capitalizeFirstLetter(order.status);
+            document.getElementById('detail-total').textContent = '$' + order.total_amount.toFixed(2);
+            
+            // Set current status in dropdown
+            document.getElementById('order-status').value = order.status;
+            
+            // Set order ID for status update
+            document.getElementById('update-status-btn').setAttribute('data-id', order.id);
+            
+            // Populate items table
+            const itemsTableBody = document.querySelector('#order-items-table tbody');
+            itemsTableBody.innerHTML = '';
+            
+            order.items.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>$${item.subtotal.toFixed(2)}</td>
+                `;
+                itemsTableBody.appendChild(tr);
+            });
+            
+            // Show modal
+            document.getElementById('order-details-modal').style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error loading order details:', error);
+    }
+}
+
+async function updateOrderStatus() {
+    const orderId = document.getElementById('update-status-btn').getAttribute('data-id');
+    const newStatus = document.getElementById('order-status').value;
+    
+    try {
+        const response = await fetch(`/api/orders/${orderId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Update status display
+            document.getElementById('detail-status').textContent = capitalizeFirstLetter(newStatus);
+            
+            // Reload orders in background
+            loadOrders();
+            
+            alert('Order status updated successfully.');
+        } else {
+            alert('Error: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        alert('An error occurred while updating the order status.');
+    }
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+[
+    {
+        "id": "31f9a13b-48ec-48f7-8601-8ff9d54b5eb4",
+        "name": "apple",
+        "description": "this is apple",
+        "quantity": 12,
+        "price": 30.0,
+        "low_stock_threshold": 10,
+        "created_at": "2025-04-17 19:44:48"
+    }
+]
