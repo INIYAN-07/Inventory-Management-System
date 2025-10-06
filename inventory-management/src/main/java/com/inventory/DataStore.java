@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.GsonBuilder; 
 
 public class DataStore {
     private static final String FILE_PATH = "src/main/resources/data/inventory.json";
@@ -25,6 +25,7 @@ public class DataStore {
         }
     }
 
+    
     public static void saveItems(List<InventoryItem> items) {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             gson.toJson(items, writer);
