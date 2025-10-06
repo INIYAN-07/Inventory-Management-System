@@ -1,11 +1,13 @@
 package com.inventory;
 
 
+
 public class InventoryItem {
     private String id;
     private String name;
     private int quantity;
     private double price;
+
 
     public InventoryItem() {}
 
